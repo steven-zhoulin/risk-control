@@ -21,6 +21,9 @@ public class AbstractHBaseAccumulator {
 	@Autowired
 	private IWarningSV warningSVImpl;
 
+	@Autowired
+	private HbaseOps hbaseOps;
+
 	public void sinkToHBase(String tableName, String time, Map<String, AtomicLong> oldLocalCounts) {
 
 		List<CallUnit> list = new ArrayList(5000);
@@ -32,7 +35,7 @@ public class AbstractHBaseAccumulator {
 		oldLocalCounts.clear();
 
 		try {
-			HTable hTable = HbaseOps.getHbaseTable(tableName);
+			HTable hTable = hbaseOps.getHbaseTable(tableName);
 			List<Put> puts = new ArrayList<>();
 			for (CallUnit callUnit : list) {
 				String rowKey = time + "-" + callUnit.getName();

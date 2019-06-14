@@ -15,6 +15,7 @@ import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,9 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 	 */
 	@Value("${risk.threshold}")
 	private double threshold;
+
+	@Autowired
+	private HbaseOps hbaseOps;
 
 	private static final int DAYS_30 = 30;
 
@@ -97,6 +101,9 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 			}
 
 			long currCount = callUnit.getCount();
+			if(days == 0){
+				return;
+			}
 			long average = cnt / days;
 			if (((currCount - average) / average) > threshold) {
 				// 如果超过设定阈值则插入预警表
@@ -134,7 +141,7 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 	}
 
 	private Result selectByRowKey(String tableName, String rowKey) throws IOException {
-		HTable hTable = HbaseOps.getHbaseTable(tableName);
+		HTable hTable = hbaseOps.getHbaseTable(tableName);
 		Get get = new Get(Bytes.toBytes(rowKey));
 		Result result = hTable.get(get);
 		return result;

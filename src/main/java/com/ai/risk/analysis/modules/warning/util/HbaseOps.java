@@ -26,7 +26,7 @@ public class HbaseOps {
     public static final byte[] COL_CNT = Bytes.toBytes("cnt");
     private static Connection connection;
 
-    public static final Connection getConnection(String address) {
+    public final Connection getConnection(String address) {
         if (null == connection) {
             connection = HbaseConnectionFactory.getHbaseConnection(address);
         }
@@ -43,20 +43,21 @@ public class HbaseOps {
      * hbase生命周期
      */
     @Value("${spring.hbase.ttl}")
-    private static int ttl;
+    private int ttl;
 
     /**
      * 获取hbase表
      */
-    public static HTable getHbaseTable(String tableName) throws IOException {
+    public HTable getHbaseTable(String tableName) throws IOException {
 
         HTable table = HTABLE_MAP.get(tableName);
         if (null != table) {
             return table;
         }
 
+        Connection con = getConnection(address);
         TableName tName = TableName.valueOf(tableName);
-        Admin admin = connection.getAdmin();
+        Admin admin = con.getAdmin();
         if (!admin.tableExists(tName)) {
             HTableDescriptor tableDescriptor = new HTableDescriptor(tName);
             HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(CF_BASE);
@@ -64,7 +65,7 @@ public class HbaseOps {
             tableDescriptor.addFamily(hColumnDescriptor);
             admin.createTable(tableDescriptor);
         }
-        table = (HTable) connection.getTable(tName);
+        table = (HTable) con.getTable(tName);
         table.setAutoFlushTo(false);
         HTABLE_MAP.put(tableName, table);
 
