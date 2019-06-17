@@ -24,6 +24,7 @@ public class HbaseOps {
 
     public static final byte[] CF_BASE = Bytes.toBytes("base");
     public static final byte[] COL_CNT = Bytes.toBytes("cnt");
+
     private static Connection connection;
 
     public final Connection getConnection(String address) {

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.hadoop.hbase.client.Get;
@@ -64,17 +65,16 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 	 */
 	@Override
 	public void warning(String tableName, String timestamp, List<CallUnit> list) throws Exception {
-
 		if (CollectionUtils.isEmpty(list)) {
 			return;
 		}
-
+		log.info("预警数据量：" + list.size() + "条");
 		Date date = DateUtils.parseDate(timestamp, "yyyyMMddHH");
 
-		for (CallUnit callUnit : list) {
-
+		for (int i = 0 ; i < list.size() ; i++) {
+			CallUnit callUnit = list.get(i);
 			int days = 0;
-			int cnt = 0;
+			long cnt = 0;
 			int allDays = 1;
 
 			String name = callUnit.getName();
@@ -89,35 +89,36 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 						// 只有没有预警过的数据才计入平均值统计
 						continue;
 					}
-
-					cnt += Integer.valueOf(Bytes.toString(result.getValue(HbaseOps.CF_BASE, HbaseOps.COL_CNT)));
+					cnt += Long.valueOf(Bytes.toString(result.getValue(HbaseOps.CF_BASE, HbaseOps.COL_CNT)));
 					days++;
 				}
 
 				allDays++;
-				if (allDays >= ttl / 24 / 60 / 60) {
+				if (allDays >= (ttl / 24 / 60 / 60)) {
 					break;
 				}
 			}
 
 			long currCount = callUnit.getCount();
-			if(days == 0){
-				return;
-			}
-			long average = cnt / days;
-			if (((currCount - average) / average) > threshold) {
-				// 如果超过设定阈值则插入预警表
-				insertWaring(callUnit);
+			if(days > 0){
+				long average = cnt / days;
+				if (((currCount - average) / average) >= threshold) {
+					// 如果超过设定阈值则插入预警表
+					insertWaring(callUnit, timestamp);
 
-				String msg = String.format("%s 调用预警, %s 被调次数: %d, 前30天均值: %d", tableName, callUnit.getName(), currCount, average);
-				log.info(msg);
+					String msg = String.format("%s 调用预警, %s 被调次数: %d, 前30天均值: %d", tableName, callUnit.getName(), currCount, average);
+					log.info(msg);
+				}
 			}
+
 		}
 	}
 
-	private void insertWaring(CallUnit callUnit) {
+	private void insertWaring(CallUnit callUnit, String timestamp) throws Exception {
+		Date date = DateUtils.parseDate(timestamp, "yyyyMMddHH");
+		String name = DateFormatUtils.format(date, "yyyyMMddHH") + "-" + callUnit.getName();
 		Warning warning = new Warning();
-		warning.setName(callUnit.getName());
+		warning.setName(name);
 		warning.setCnt(callUnit.getCount());
 		warning.setIsWarning("N");
 		warning.setCreateDate(LocalDateTime.now());

@@ -40,7 +40,7 @@ public class AbstractHBaseAccumulator {
 			for (CallUnit callUnit : list) {
 				String rowKey = time + "-" + callUnit.getName();
 				Put put = new Put(Bytes.toBytes(rowKey));
-				put.addColumn(HbaseOps.CF_BASE, HbaseOps.COL_CNT, Bytes.toBytes(callUnit.getCount()));
+				put.addColumn(HbaseOps.CF_BASE, HbaseOps.COL_CNT, Bytes.toBytes(String.valueOf(callUnit.getCount())));
 				puts.add(put);
 			}
 
