@@ -40,4 +40,7 @@ public class Warning extends BaseEntity {
     @TableField("CREATE_DATE")
     private LocalDateTime createDate;
 
+    @TableField("WARNING_TYPE")
+    private String warningType;
+
 }

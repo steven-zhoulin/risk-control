@@ -29,8 +29,8 @@ public class HBaseSinkTask {
 	@Autowired
 	private IOpcodeSV opcodeSVImpl;
 
-	@Scheduled(cron = "0 */5 * * * ?") // 每 5 分钟执行一次
-	//@Scheduled(cron = "0 0 * * * ?") // 整点执行一次
+	//@Scheduled(cron = "0 */5 * * * ?") // 每 5 分钟执行一次
+	@Scheduled(cron = "0 0 * * * ?") // 整点执行一次
 	public void scheduled() {
 
 		// 获取上一个周期的时间

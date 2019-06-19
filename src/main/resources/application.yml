@@ -30,6 +30,8 @@ spring:
 
 risk:
   threshold: 1.2
+  serviceMin: 20
+  opCodeMin: 20
   seperatorChar: '^'
   step: 10000
   needPause: false
