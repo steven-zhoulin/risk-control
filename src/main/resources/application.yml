@@ -36,8 +36,6 @@ risk:
   step: 10000
   needPause: false
   sleepmillis: 10
-  entrance:
-    name: CSF
   redisAccumulator:
     threshold: 6
 
