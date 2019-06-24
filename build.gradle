@@ -54,6 +54,12 @@ dependencies {
     compile 'com.baomidou:mybatis-plus:3.1.0'
     compile 'com.alibaba:druid-spring-boot-starter:1.1.16'
     compile fileTree(dir: 'lib', include: ['*.jar'])
+    compile files('lib/zookeeper-3.5.1-log4x.jar')
+    compile files('lib/kafkaMonitor-1.0.jar')
+    compile files('lib/kafka_2.8.2-0.8.1.jar')
+    compile files('lib/scala-library-2.8.2.jar')
+
+    compile 'com.google.guava:guava:20.0'
 
     compileOnly 'org.projectlombok:lombok:1.14.8'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
