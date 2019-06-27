@@ -1,4 +1,4 @@
-package com.ai.risk.analysis.monitor.wadesearch.entity;
+package com.ai.risk.analysis.modules.monitor.wadesearch.entity;
 
 /**
  * @author Steven

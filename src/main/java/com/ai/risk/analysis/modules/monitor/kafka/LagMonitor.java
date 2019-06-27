@@ -1,4 +1,4 @@
-package com.ai.risk.analysis.kafka.monitor;
+package com.ai.risk.analysis.modules.monitor.kafka;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -17,12 +17,15 @@ import me.gavincook.monitor.zk.ZKFetcher;
 import me.gavincook.monitor.zk.ZKManager;
 import org.apache.commons.collections.MapUtils;
 import org.apache.zookeeper.KeeperException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 
+/**
+ *
+ * @author lijun17
+ * @since 2019-06-22
+ */
 @Slf4j
 public class LagMonitor {
 	private ZKFetcher kafkaZkFetcher;

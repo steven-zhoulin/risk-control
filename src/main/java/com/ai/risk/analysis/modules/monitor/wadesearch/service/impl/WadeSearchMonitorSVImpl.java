@@ -1,8 +1,8 @@
-package com.ai.risk.analysis.monitor.wadesearch.service.impl;
+package com.ai.risk.analysis.modules.monitor.wadesearch.service.impl;
 
-import com.ai.risk.analysis.monitor.wadesearch.entity.SearchStat;
-import com.ai.risk.analysis.monitor.wadesearch.entity.Single;
-import com.ai.risk.analysis.monitor.wadesearch.service.IWadeSearchMonitorSV;
+import com.ai.risk.analysis.modules.monitor.wadesearch.entity.SearchStat;
+import com.ai.risk.analysis.modules.monitor.wadesearch.entity.Single;
+import com.ai.risk.analysis.modules.monitor.wadesearch.service.IWadeSearchMonitorSV;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.influxdb.InfluxDB;
@@ -42,7 +42,7 @@ public class WadeSearchMonitorSVImpl implements IWadeSearchMonitorSV {
 
         for (String addr : address) {
             String url = "http://" + addr;
-            log.info("采集搜索引擎数据 {} ", url);
+            // log.info("采集搜索引擎数据 {} ", url);
 
 	        ResponseEntity<String> responseEntity = null;
 
@@ -64,6 +64,8 @@ public class WadeSearchMonitorSVImpl implements IWadeSearchMonitorSV {
             }
 
         }
+
+        log.info("采集搜索监控数据，耗时(ms): {}", (System.currentTimeMillis() - currTime));
 
     }
 

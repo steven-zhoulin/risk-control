@@ -35,7 +35,7 @@ public class RootConfig {
 	@Bean
 	public InfluxDB influxDB() {
 		InfluxDB influxDB = InfluxDBFactory.connect("http://10.174.59.41:8086", "admin", "admin");
-		String dbName = "csf_service";
+		String dbName = "hubble";
 		influxDB.setDatabase(dbName);
 		influxDB.enableBatch(BatchOptions.DEFAULTS.actions(5000).flushDuration(1000));
 		influxDB.enableGzip();

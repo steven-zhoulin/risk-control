@@ -1,7 +1,7 @@
-package com.ai.risk.analysis.kafka.monitor.service.impl;
+package com.ai.risk.analysis.modules.monitor.kafka.service.impl;
 
-import com.ai.risk.analysis.kafka.monitor.LagMonitor;
-import com.ai.risk.analysis.kafka.monitor.service.IKafkaMonitorSV;
+import com.ai.risk.analysis.modules.monitor.kafka.LagMonitor;
+import com.ai.risk.analysis.modules.monitor.kafka.service.IKafkaMonitorSV;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections.MapUtils;
 import org.apache.zookeeper.KeeperException;
@@ -15,6 +15,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * <p>
+ *  kafka数据聚合
+ * </p>
+ *
+ * @author lijun17
+ * @since 2019-06-22
+ */
 @Service
 public class KafkaMonitorSVImpl implements IKafkaMonitorSV {
 
@@ -113,7 +121,7 @@ public class KafkaMonitorSVImpl implements IKafkaMonitorSV {
                 .time(currentTimeMillis, TimeUnit.MILLISECONDS)
                 .build();
 
-        influxDB.write("kafka", "autogen", point);
+        influxDB.write("hubble", "autogen", point);
     }
 
     /**
@@ -130,7 +138,7 @@ public class KafkaMonitorSVImpl implements IKafkaMonitorSV {
                 .time(currentTimeMillis, TimeUnit.MILLISECONDS)
                 .build();
 
-        influxDB.write("kafka", "autogen", point);
+        influxDB.write("hubble", "autogen", point);
     }
 
     /**
@@ -147,6 +155,6 @@ public class KafkaMonitorSVImpl implements IKafkaMonitorSV {
                 .time(currentTimeMillis, TimeUnit.MILLISECONDS)
                 .build();
 
-        influxDB.write("kafka", "autogen", point);
+        influxDB.write("hubble", "autogen", point);
     }
 }

@@ -1,4 +1,4 @@
-package com.ai.risk.analysis.kafka.monitor.service;
+package com.ai.risk.analysis.modules.monitor.kafka.service;
 
 import org.apache.zookeeper.KeeperException;
 

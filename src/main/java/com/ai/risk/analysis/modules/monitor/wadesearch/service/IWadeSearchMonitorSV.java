@@ -1,4 +1,4 @@
-package com.ai.risk.analysis.monitor.wadesearch.service;
+package com.ai.risk.analysis.modules.monitor.wadesearch.service;
 
 import org.apache.zookeeper.KeeperException;
 
