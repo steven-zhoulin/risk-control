@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -69,8 +70,13 @@ public class ServiceConsumer extends Thread {
 				String ip = SpanUtil.getHostIp((String) span.get("hostName"));
 				String instance = (String) span.get("appName");
 				// boolean success = (boolean) span.get("success");
-				Map extMap = (Map) span.get("ext");
-				String opCode = (String) extMap.get("opCode");
+				String opCode = (String)span.get("opCode");
+				if (StringUtils.isEmpty(opCode)){
+					Map extMap = (Map)span.get("ext");
+					if (!Objects.isNull(extMap)){
+						opCode = (String)extMap.get("opCode");
+					}
+				}
 
 				if (!assertNotBlank(serviceName, opCode, ip, instance)) {
 					continue;
